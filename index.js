@@ -6,24 +6,23 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 
 client.commands = new Collection();
-//sets up route for commands folder and creates an array for these commands using fs.readdirSync()
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-console.log(commandFiles);
+const foldersPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(foldersPath);
 
-for(const file of commandFiles) {
-    const filePath = path.join(commandsPath, file);
-    const command = require(filePath);
-	console.log(command);
-
-    //checks to see if 'data' and 'execute' property are contained with command file
-    if('data' in command && 'execute' in command) {
-        client.commands.set(command.data.name, command);
-    } else{
-        console.log(`The command at ${filePath} is missing required "data" or "execute" property.`);
-    }
-	console.log(client.commands);
-};
+for (const folder of commandFolders) {
+	const commandsPath = path.join(foldersPath, folder);
+	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	for (const file of commandFiles) {
+		const filePath = path.join(commandsPath, file);
+		const command = require(filePath);
+		// Set a new item in the Collection with the key as the command name and the value as the exported module
+		if ('data' in command && 'execute' in command) {
+			client.commands.set(command.data.name, command);
+		} else {
+			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		}
+	}
+}
 
 //listener for interaction
 
