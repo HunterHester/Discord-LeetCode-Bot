@@ -2,7 +2,6 @@ const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
 const { token } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
-
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 
@@ -10,10 +9,12 @@ client.commands = new Collection();
 //sets up route for commands folder and creates an array for these commands using fs.readdirSync()
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+console.log(commandFiles);
 
 for(const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
     const command = require(filePath);
+	console.log(command);
 
     //checks to see if 'data' and 'execute' property are contained with command file
     if('data' in command && 'execute' in command) {
@@ -21,6 +22,7 @@ for(const file of commandFiles) {
     } else{
         console.log(`The command at ${filePath} is missing required "data" or "execute" property.`);
     }
+	console.log(client.commands);
 };
 
 //listener for interaction
