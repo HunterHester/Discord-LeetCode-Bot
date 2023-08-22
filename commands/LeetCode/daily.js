@@ -6,7 +6,8 @@ const fetchData = async () => {
         const jsonDATA = await fetchDailyCodingChallenge();
         const dailyTitle = jsonDATA.data.activeDailyCodingChallengeQuestion.question.title;
         const dailyURL = `https://leetcode.com${jsonDATA.data.activeDailyCodingChallengeQuestion.link}`;
-        return { dailyTitle, dailyURL };
+        const date = jsonDATA.data.activeDailyCodingChallengeQuestion.date;
+        return { dailyTitle, dailyURL, date };
     } catch (err) {
         console.error('Error fetching:', err);
         return null;
@@ -20,10 +21,10 @@ module.exports = {
     .setName('daily')
     .setDescription('Provides daily leetcode challenge URL'),
     async execute(interaction) {
-        const { dailyTitle, dailyURL } = await fetchData();
+        const { dailyTitle, dailyURL, date } = await fetchData();
 
-        if (dailyTitle && dailyURL) {
-            await interaction.reply(`Today's daily is ${dailyTitle}, URL: ${dailyURL} `)
+        if (dailyTitle && dailyURL && date) {
+            await interaction.reply(`Here's the daily for ${date}:\n\n**${dailyTitle}**\n\n${dailyURL}`)
         } else {
             await interaction.reply("Failed to fetch daily challenge data.");
         }
