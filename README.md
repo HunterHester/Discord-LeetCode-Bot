@@ -32,7 +32,7 @@ The bot will post the daily challenge in whatever channel you specify automatica
 
 * `/daily` Returns the daily challenge
 * `/enroll` enrolls user into notifications
-* `unenroll` unenrolls user from notifications
+* `/unenroll` unenrolls user from notifications
 
 ## Future Implementations
 
