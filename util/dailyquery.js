@@ -40,7 +40,7 @@ const fetchDailyCodingChallenge = async () => {
 
     const response = await fetch(LEETCODE_API_ENDPOINT, init)
     const jsonDATA = await response.json()
-    // console.log(jsonDATA)
+
     return jsonDATA
     
 }

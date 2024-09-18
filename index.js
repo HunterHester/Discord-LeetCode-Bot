@@ -3,6 +3,9 @@ const { token } = require('./config.json');
 const fs = require('node:fs');
 const path = require('node:path');
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const cron = require('node-cron');
+const { formatData } = require('./util/dailyreturn.js');
+
 
 
 client.commands = new Collection();
@@ -49,9 +52,25 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 
-// prints if bot is logged in
+// connects bot and runs scheduled time events
 client.once(Events.ClientReady, c => {
     console.log(`Logged in as ${c.user.tag}`);
+
+	//posts daily at midnight UTC
+	try {
+		cron.schedule('0 0 * * *', async () => {
+		const { dailyTitle, dailyURL, date, difficulty } = await formatData();
+		const channel = client.channels.cache.get('1136475268513538050');
+		const roleID = '1281316704638468156';
+
+		channel.send(`<@&${roleID}> Here's the daily for ${date}:\n\n**${dailyTitle}**\n${difficulty}\n\n${dailyURL}`)
+	}, {
+		timezone: "UTC"
+	});
+} catch (error) {
+		console.error(error);
+	}
+
 });
 
 client.login(token);
