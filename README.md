@@ -1,6 +1,8 @@
 # Discord LeetCode Bot
 
 The Discord Leetcode bot queries the LeetCode GraphQL API to fetch and return the latest daily challenge directly into your Discord server. This bot is designed to help users stay consistent with their coding practice by providing them with the daily problem from LeetCode.
+<img src="https://github.com/user-attachments/assets/4ccffb55-519a-4d20-84c9-9e5d82991412" width="400"/>
+
 
 ##
 
